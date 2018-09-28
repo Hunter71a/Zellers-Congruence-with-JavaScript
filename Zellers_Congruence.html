@@ -112,6 +112,7 @@
         // alert(dayOfWeek);   
         var day = getDayName(dayOfWeek);
         alert('It was a ' + day + '!');
+        $('.alert').removeClass('d-none').html(day);
 
     function getDayName(dow) {
          var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
