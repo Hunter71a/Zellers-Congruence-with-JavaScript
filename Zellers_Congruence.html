@@ -1,0 +1,126 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Zeller's Congruence</title>
+    <meta name="description" content="The HTML5 Herald">
+    <meta name="Carl Olson" content="Calculate day of week based on calender numerical date">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <style>
+        body {
+            background-color: rgb(210, 250, 245);
+        }
+
+        .jumbotron {
+            background-color: lightblue;
+        }
+        .notes {
+            padding: 1em;
+        }
+    </style>
+</head>
+
+<body>
+    <div class=container>
+        <div class="jumbotron">
+            <h1 class="display-4">Day of the Week Calculator</h1>
+            <p class="lead">This is an example of calculating the day of the week from a numerical date.</p>
+            <hr class="my-4">
+            <p>Implementing Zeller's Congruence using JavaScript</p>
+        </div>
+        <div class="form-group form-row">
+            <label class="col-md-2 col-form-label" for="birthDate">Enter Date: </label>
+            <input type="text" id="birthDate" class="col-md-4" placeholder="mm/dd/yyyy" />
+        </div>
+        <div class="form-row form-group">
+            <button class="col-md-3 offset-md-2 btn btn-primary" onclick="calculateDOW()">Calculate</button>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-primary d-none" role="alert">
+         
+                </div>
+            </div>
+        </div>
+        <div class="notes">
+            <h2>Zeller's Congruence classic equation</h2>
+            <p>Zeller used decimal arithmetic</p>
+            <img src="img/ZellersCongruence.JPG" alt="Zellers Congruence Equation">
+            <ul class="notes">
+                <li><em>h</em> is the day of the week where 0 = Sunday and 6 = Saturday</li>
+                <li><em>q</em> is the day of the month</li>
+                <li><em>m</em> is the month, which must be adjusted as JavaScript getMonth() indexes as January as month 0</li>
+                <li><em>K</em> is the year of the century, (year modulus 100)</li>
+                <li><em>J</em> is the year divided by 100</li>
+            </ul>
+        </div>
+        <div class="notes">
+            <h2>Zeller's Congruence converted for easier computational impementation </h2>
+            <p>"J" and "K" are calculated using the standard year which introduces some additional modifications such as treating January 
+                and February as months 13 and 14 of the previous year. "-2J" is converted to +5J to avoid negative numbers and is simply advancing the 
+                days by 7 which still results in the same day of the week and avoids taking the modulus of a negative number which bothers 
+                our JavaScript but which Zeller appears not to have minded.</p>
+            <img src="img/equationAsImplementedCapture.JPG" alt="Zellers Congruence modified equation for easier algorithmic implementation">   
+        </div>
+        <div class="notes">
+            <H4>Bibliography</h4>
+                <a href="https://en.wikipedia.org/wiki/Zeller%27s_congruence" target="blank">Wikipedia Article on Zeller's Congruence</a>
+                   </div>
+    </div>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+
+    <script>
+        function calculateDOW() {
+            var enteredDate = new Date(document.getElementById('birthDate').value);
+            var month = enteredDate.getMonth();
+            var date = enteredDate.getDate();
+            var year = enteredDate.getFullYear();
+     // in algorithm friendly version, January and February are counted as 
+     //month 13 and 14 respectively of previous year       
+     if (month < 2) {
+       year --  ;
+       month = month + 13;   // January is index "0", so add 13
+       // alert(month);
+       }
+      else {
+       month ++;  // since getMonth index starts at 0 must add one to get correct month
+        }
+
+     //alert(month);
+     var monthAdjustment = Math.floor(((13 * (month + 1)) / 5));
+     //alert(month);
+     var leapYearAdjustment = Math.floor(year/4);   //use floor so equals zero except in leap year for +1 day
+       // alert(leapYearAdjustment);
+        var centuryAdjustment = (year/100);   // Math.floor on zellersNumber adjusts this one
+        var fourHundredYearFudgeFactor = Math.floor(year/400); // use floor again so adds one day every 400 years
+        var zellersNumber = Math.floor(date + monthAdjustment + year + leapYearAdjustment - centuryAdjustment + fourHundredYearFudgeFactor);
+        var dayOfWeek = zellersNumber % 7
+        // alert(zellersNumber);  
+        // alert(dayOfWeek);   
+        var day = getDayName(dayOfWeek);
+        alert('It was a ' + day + '!');
+
+    function getDayName(dow) {
+         var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+         var day = days[dow];
+         return day;
+    }
+}
+  </script>
+
+</body>
+
+</html>
