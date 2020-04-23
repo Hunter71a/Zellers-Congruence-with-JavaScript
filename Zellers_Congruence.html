@@ -93,23 +93,18 @@
      if (month < 2) {
        year --  ;
        month = month + 13;   // January is index "0", so add 13
-       // alert(month);
        }
       else {
        month ++;  // since getMonth index starts at 0 must add one to get correct month
         }
 
-     //alert(month);
      var monthAdjustment = Math.floor(((13 * (month + 1)) / 5));
-     //alert(month);
+
      var leapYearAdjustment = Math.floor(year/4);   //use floor so equals zero except in leap year for +1 day
-       // alert(leapYearAdjustment);
         var centuryAdjustment = (year/100);   // Math.floor on zellersNumber adjusts this one
         var fourHundredYearFudgeFactor = Math.floor(year/400); // use floor again so adds one day every 400 years
         var zellersNumber = Math.floor(date + monthAdjustment + year + leapYearAdjustment - centuryAdjustment + fourHundredYearFudgeFactor);
         var dayOfWeek = zellersNumber % 7
-        // alert(zellersNumber);  
-        // alert(dayOfWeek);   
         var day = getDayName(dayOfWeek);
         alert('It was a ' + day + '!');
         $('.alert').removeClass('d-none').html(day);
